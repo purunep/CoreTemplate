@@ -1,0 +1,10 @@
+﻿{
+  "ConnectionStrings": {
+    "CoreConnectionString": "server=SQL5003.site4now.net;Database=DB_A428C2_corepuru;User Id=DB_A428C2_corepuru_admin;Password=********;MultipleActiveResultSets=true;"
+  },
+  "Tokens": {
+    "Key": "abcd1234;asdfjlsajdfljksaldf.;,sadfsadf",
+    "Issuer": "localhost",
+    "Audience":  "users"
+  }
+}

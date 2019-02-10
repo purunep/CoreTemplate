@@ -5,16 +5,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using CoreTest.Services;
 using CoreTest.ViewModels;
+using CoreTest.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CoreTest.Controllers
 {
     public class AppController : Controller
     {
         private readonly IMailService _mailService;
-
-        public AppController(IMailService mailService)
+        private readonly ICoreRepository _repository;
+     
+        public AppController(IMailService mailService, ICoreRepository repository)
         {
           _mailService = mailService;
+           _repository = repository;
         }
         public IActionResult Index()
         {
@@ -43,6 +47,11 @@ namespace CoreTest.Controllers
         public IActionResult About()
         {
             ViewBag.Title = "About Us";
+            return View();
+        }
+
+        public IActionResult Shop()
+        {
             return View();
         }
     }
