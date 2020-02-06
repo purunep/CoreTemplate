@@ -1,0 +1,97 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AuthTest.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+
+namespace AuthTest.Controllers
+{
+    public class AccountController : Controller
+    {
+        private UserManager<AppUser> UserMgr { get; }
+        private SignInManager<AppUser> SignInMgr { get; }
+
+        public AccountController(UserManager<AppUser> userManager, 
+            SignInManager<AppUser> signInManager)
+        {
+            UserMgr = userManager;
+            SignInMgr = signInManager;
+
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await SignInMgr.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+
+        }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                var result = await SignInMgr.PasswordSignInAsync(model.UserName, model.Password,model.RememberMe, false);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+                }
+            }
+           
+            return View(model);
+        }
+
+       public async Task<IActionResult> Register()
+        {
+            MyTestDbContext context = new MyTestDbContext();
+            var users = context.CompanyUsers;
+            foreach(var user in users)
+            {
+                var n = user.Name;
+                var Id = user.CompanyId;
+            }
+            try
+            {
+                //AppUser user = await UserMgr.FindByNameAsync("TestUser");
+                //if(user == null)
+                //{
+                //    user = new AppUser()
+                //    {
+                //        UserName = "TestUser",
+                //        Email = "test@test.com",
+                //        companyId = 500,
+                //        oldPrimaryId = 100
+                //    };
+
+                //    IdentityResult result = await UserMgr.CreateAsync(user, "test123!");
+                //    if(result.Succeeded)
+                //    {
+                //        ViewBag.Message = "User created.";
+                //    }
+                //    else
+                //    {
+                //        ViewBag.Message = result.Errors.FirstOrDefault().Description;
+                //    }
+                   
+                //}
+            }
+            catch(Exception ex)
+            {
+                ViewBag.Message = ex.Message;
+            }
+            return View();
+        }
+    }
+}
